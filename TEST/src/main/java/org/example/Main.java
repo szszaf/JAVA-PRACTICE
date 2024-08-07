@@ -70,7 +70,12 @@ class BigNumberCalculator {
         return resultStringBuilder.toString();
     }
 
-
+    /** TEST 2
+     *
+     * @param firstNumber
+     * @param secondNumber
+     * @return
+     */
     public String addWithChunks(String firstNumber, String secondNumber) {
 
         StringBuilder resultStringBuilder = new StringBuilder();
