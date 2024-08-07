@@ -11,13 +11,14 @@ public class BigNumberCalculator {
     private final int decimalBase = 10;
     private int chunkSize = 8;
 
-    public BigNumberCalculator() { }
+    public BigNumberCalculator() {
+    }
+
     public BigNumberCalculator(int chunkSize) {
         this.chunkSize = chunkSize;
     }
 
     /**
-     *
      * @param firstNumber
      * @param secondNumber
      * @return
@@ -32,7 +33,7 @@ public class BigNumberCalculator {
         Map<Integer, Integer> result = new TreeMap<>();
         int carrying = 0;
 
-        for (int i=0; i < numberMaxLength; i++) {
+        for (int i = 0; i < numberMaxLength; i++) {
             int resultFromCurrentPositions =
                     (firstNumberPositionMap.getOrDefault(i, 0) +
                             secondNumberPositionMap.getOrDefault(i, 0) + carrying);
@@ -52,7 +53,6 @@ public class BigNumberCalculator {
     }
 
     /**
-     *
      * @param firstNumber
      * @param secondNumber
      * @return
@@ -79,14 +79,14 @@ public class BigNumberCalculator {
             }
             resultStringBuilder.insert(0, currentChunkSum);
 
-            if(getNumberOfDigits(currentChunkSum) > this.chunkSize) {
+            if (getNumberOfDigits(currentChunkSum) > this.chunkSize) {
                 carrying = getOldestDigit(currentChunkSum);
                 resultStringBuilder.deleteCharAt(0);
-            } else if(getNumberOfDigits(currentChunkSum) < this.chunkSize) {
+            } else if (getNumberOfDigits(currentChunkSum) < this.chunkSize) {
                 int digitsDifference = carrying == 0 ?
                         this.chunkSize - getNumberOfDigits(currentChunkSum) :
                         this.chunkSize - getNumberOfDigits(currentChunkSum) - 1;
-                resultStringBuilder.insert(0, repeat("0",digitsDifference));
+                resultStringBuilder.insert(0, repeat("0", digitsDifference));
                 carrying = 0;
             } else {
                 carrying = 0;
@@ -95,11 +95,11 @@ public class BigNumberCalculator {
 
 
         String longerStringRest = firstNumber.length() != 0 ? firstNumber :
-                (secondNumber.length() != 0 ? secondNumber: "0");
+                (secondNumber.length() != 0 ? secondNumber : "0");
         int longerStringCurrentIndex = longerStringRest.length() - 1;
 
-        while(carrying != 0) {
-            if(longerStringCurrentIndex >= 0) {
+        while (carrying != 0) {
+            if (longerStringCurrentIndex >= 0) {
                 int currentDigit = Character.getNumericValue(
                         longerStringRest.charAt(longerStringCurrentIndex));
                 long currentSum = currentDigit + carrying;
@@ -114,7 +114,7 @@ public class BigNumberCalculator {
             }
         }
 
-        if(longerStringCurrentIndex != 0) {
+        if (longerStringCurrentIndex != 0) {
             resultStringBuilder.insert(0,
                     longerStringRest.substring(0, longerStringCurrentIndex + 1));
         }
@@ -126,14 +126,13 @@ public class BigNumberCalculator {
     }
 
     /**
-     *
      * @param number
      * @return
      */
     public int getNumberOfDigits(long number) {
         int currentLength = 0;
         if (number == 0) return 1;
-        while(number > 0) {
+        while (number > 0) {
             currentLength += 1;
             number /= this.decimalBase;
         }
@@ -142,7 +141,7 @@ public class BigNumberCalculator {
 
     public int getOldestDigit(long number) {
         int oldestDigit = 0;
-        while(number > 0) {
+        while (number > 0) {
             oldestDigit = (int) (number % this.decimalBase);
             number /= this.decimalBase;
         }
@@ -150,7 +149,6 @@ public class BigNumberCalculator {
     }
 
     /**
-     *
      * @param number
      * @return
      */
@@ -162,8 +160,8 @@ public class BigNumberCalculator {
     }
 
     private String getCurrentChunk(String number) {
-        return number.substring(Math.max(0, number.length() - this.chunkSize),
-                number.length());
+        return number.substring(Math.max(0, number.length() - this.chunkSize)
+        );
     }
 
     private String getChunkSliecedNumber(String number) {

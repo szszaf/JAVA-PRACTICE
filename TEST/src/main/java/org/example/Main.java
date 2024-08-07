@@ -1,9 +1,6 @@
 package main.java.org.example;
 
-import java.io.*;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.io.FileNotFoundException;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {

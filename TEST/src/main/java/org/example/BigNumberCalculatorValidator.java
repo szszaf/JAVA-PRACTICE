@@ -8,6 +8,7 @@ public class BigNumberCalculatorValidator {
     private final int firstElementIndexInValidationFile = 0;
     private final int secondElementIndexInValidationFile = 1;
     private final int sumElementIndexInValidationFile = 2;
+
     public void validationTest(BigNumberCalculator calculator) throws FileNotFoundException {
 
         try (BufferedReader br = new BufferedReader(
@@ -17,14 +18,14 @@ public class BigNumberCalculatorValidator {
 
             int testNO = 1;
             while ((line = br.readLine()) != null) {
-                String []values = line.split(";");
+                String[] values = line.split(";");
 
                 String firstNumber = values[this.firstElementIndexInValidationFile].trim();
                 String secondNumber = values[this.secondElementIndexInValidationFile].trim();
                 String actualResult = values[this.sumElementIndexInValidationFile].trim();
                 String result = calculator.addWithChunks(firstNumber, secondNumber);
 
-                if(result.equals(actualResult)) {
+                if (result.equals(actualResult)) {
                     System.out.println("Test " + testNO + " passed");
                 } else {
                     System.out.println("Test " + testNO + " not passed");

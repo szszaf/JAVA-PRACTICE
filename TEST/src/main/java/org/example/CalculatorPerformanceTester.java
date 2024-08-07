@@ -8,8 +8,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class CalculatorPerformanceTester {
-    private BigNumberCalculator calculator = new BigNumberCalculator();
     private final String testSetFilePath = "Test/src/sourceFiles/bigNumberGen.csv";
+    private final BigNumberCalculator calculator = new BigNumberCalculator();
 
     public void testFunction(BigNumberCalculatorConsumer<String, String> functionToTest) {
         long startTime = System.currentTimeMillis();

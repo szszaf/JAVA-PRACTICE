@@ -7,6 +7,7 @@ import java.util.Random;
 public class BigNumberGenerator {
     private final String defaultSaveFilePath = "Test/src//sourceFiles/bigNumberAdditionTest.csv";
     private final int decimalBase = 10;
+
     public boolean generateToFile(int minDigits, int maxDigits,
                                   int numberOfRandoms, String filePath) {
 
@@ -28,7 +29,7 @@ public class BigNumberGenerator {
         int numberOfDigits = random.nextInt(maxDigits - minDigits + 1) + minDigits;
         StringBuilder number = new StringBuilder();
 
-        for(int i=0; i<numberOfDigits; i++) {
+        for (int i = 0; i < numberOfDigits; i++) {
             number.insert(0, random.nextInt(this.decimalBase));
         }
 
