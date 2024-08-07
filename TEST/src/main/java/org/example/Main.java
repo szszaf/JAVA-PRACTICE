@@ -1,35 +1,30 @@
 package org.example;
 
-import javax.print.DocFlavor;
 import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-//        BigNumberCalculator bigNumberCalculator = new BigNumberCalculator(2);
-//        System.out.println(bigNumberCalculator.add2("102313133", "77"));
-//        System.out.println(bigNumberCalculator.add2(
-//                new String(new char[30]).replace("\0", "1"),
-//                new String(new char[30]).replace("\0", "9")
-//        ));
+        BigNumberCalculator bigNumberCalculator = new BigNumberCalculator(10);
 
-//        System.out.println(bigNumberCalculator.getCurrentChunk("1234567890", 6));
-//        System.out.println(bigNumberCalculator.getChunkSliecedNumber("1234567890", 6));
-
-        //System.out.println(bigNumberCalculator.add2("100000","10000"));
+//        bigNumberCalculator.addWithChunks("1","2");
 
 //        BigNumberCalculatorValidator calculatorValidator = new BigNumberCalculatorValidator();
-//        calculatorValidator.validationTest(new BigNumberCalculator(4));
+//        calculatorValidator.validationTest(new BigNumberCalculator(10));
 
 //        BigNumberGenerator bigNumberGenerator = new BigNumberGenerator();
-//        bigNumberGenerator.generateToFile(5, 50,
-//                1000, "Test/src//sourceFiles/bigNumberGen.csv");
-
+//        bigNumberGenerator.generateToFile(50, 100,
+//                10000000, "Test/src//sourceFiles/bigNumberGen.csv");
+//
         CalculatorPerformanceTester performanceTester = new CalculatorPerformanceTester();
-        performanceTester.test(new BigNumberCalculator(4)::add2);
+        System.out.println("Adding by positions performance");
+        performanceTester.test(bigNumberCalculator::addByPositions);
+        System.out.println("------------------------------------");
+        System.out.println("Adding with chunks performance");
+        performanceTester.test(bigNumberCalculator::addWithChunks);
+        System.out.println("------------------------------------");
     }
 }
 
@@ -44,7 +39,7 @@ class BigNumberCalculator {
         this.chunkSize = chunkSize;
     }
 
-    public String add(String firstNumber, String secondNumber) {
+    public String addByPositions(String firstNumber, String secondNumber) {
         Map<Integer, Integer> firstNumberPositionMap = getDigitsPositions(firstNumber);
         Map<Integer, Integer> secondNumberPositionMap = getDigitsPositions(secondNumber);
 
@@ -74,10 +69,10 @@ class BigNumberCalculator {
     }
 
 
-    public String add2(String firstNumber, String secondNumber) {
+    public String addWithChunks(String firstNumber, String secondNumber) {
 
         StringBuilder resultStringBuilder = new StringBuilder();
-        int carrying = 0;
+        long carrying = 0;
 
         while (!firstNumber.isEmpty() && !secondNumber.isEmpty()) {
             String firstStringCurrentChunk = getCurrentChunk(firstNumber);
@@ -86,21 +81,35 @@ class BigNumberCalculator {
             firstNumber = getChunkSliecedNumber(firstNumber);
             secondNumber = getChunkSliecedNumber(secondNumber);
 
-            int currentChunkSum = getNumberFromString(firstStringCurrentChunk) +
-                    getNumberFromString(secondStringCurrentChunk) + carrying;
+            long currentChunkSum = 0;
 
+            try {
+                currentChunkSum = getNumberFromString(firstStringCurrentChunk) +
+                        getNumberFromString(secondStringCurrentChunk) + carrying;
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+            }
             resultStringBuilder.insert(0, currentChunkSum);
 
             if(getNumberOfDigits(currentChunkSum) > this.chunkSize) {
                 carrying = getOldestDigit(currentChunkSum);
                 resultStringBuilder.deleteCharAt(0);
             } else if(getNumberOfDigits(currentChunkSum) < this.chunkSize) {
-                int digitsDifference = this.chunkSize - getNumberOfDigits(currentChunkSum);
-                resultStringBuilder.insert(0, "0".repeat(digitsDifference - 1));
+                int digitsDifference = carrying == 0 ?
+                        this.chunkSize - getNumberOfDigits(currentChunkSum) :
+                        this.chunkSize - getNumberOfDigits(currentChunkSum) - 1;
+                resultStringBuilder.insert(0, repeat("0",digitsDifference));
                 carrying = 0;
-            }   else {
+            } else {
                 carrying = 0;
             }
+
+//            System.out.println(firstNumber);
+//            System.out.println(firstStringCurrentChunk);
+//            System.out.println(secondNumber);
+//            System.out.println(secondStringCurrentChunk);
+//            System.out.println(currentChunkSum);
+//            System.out.println(resultStringBuilder);
         }
 
 
@@ -112,12 +121,13 @@ class BigNumberCalculator {
             if(longerStringCurrentIndex >= 0) {
                 int currentDigit = Character.getNumericValue(
                         longerStringRest.charAt(longerStringCurrentIndex));
-                int currentSum = currentDigit + carrying;
+                long currentSum = currentDigit + carrying;
 
                 longerStringCurrentIndex -= 1;
                 resultStringBuilder.insert(0, currentSum % this.decimalBase);
                 carrying = currentSum / this.decimalBase;
             } else {
+                carrying = carrying == -1 ? 0 : carrying;
                 resultStringBuilder.insert(0, carrying);
                 carrying = 0;
             }
@@ -128,11 +138,15 @@ class BigNumberCalculator {
                     longerStringRest.substring(0, longerStringCurrentIndex + 1));
         }
 
+        while (resultStringBuilder.toString().startsWith("0")) {
+            resultStringBuilder.deleteCharAt(0);
+        }
         return resultStringBuilder.toString();
     }
 
-    public int getNumberOfDigits(int number) {
+    public int getNumberOfDigits(long number) {
         int currentLength = 0;
+        if (number == 0) return 1;
         while(number > 0) {
             currentLength += 1;
             number /= this.decimalBase;
@@ -140,20 +154,20 @@ class BigNumberCalculator {
         return currentLength;
     }
 
-    public int getOldestDigit(int number) {
+    public int getOldestDigit(long number) {
         int oldestDigit = 0;
         while(number > 0) {
-            oldestDigit = number % this.decimalBase;
+            oldestDigit = (int) (number % this.decimalBase);
             number /= this.decimalBase;
         }
         return oldestDigit;
     }
 
-    private int getNumberFromString(String number) {
+    private long getNumberFromString(String number) {
         if (number.isEmpty()) {
             return 0;
         }
-        return Integer.valueOf(number);
+        return Long.parseLong(number);
     }
 
     private String getCurrentChunk(String number) {
@@ -172,6 +186,11 @@ class BigNumberCalculator {
         return IntStream.range(0, number.length()).boxed().
                 collect(Collectors.toMap(i -> i,
                         i -> Character.getNumericValue(number.charAt(number.length() - 1 - i))));
+    }
+
+    public String repeat(String stringToRepeat, int count) {
+        return Collections.nCopies(count, stringToRepeat).
+                stream().reduce("", (accumulator, str) -> accumulator + str);
     }
 }
 
@@ -193,10 +212,10 @@ class BigNumberCalculatorValidator {
             while ((line = br.readLine()) != null) {
                 String []values = line.split(";");
 
-                String firstNumber = values[this.firstElementIndexInValidationFile];
-                String secondNumber = values[this.secondElementIndexInValidationFile];
-                String actualResult = values[this.sumElementIndexInValidationFile];
-                String result = calculator.add2(firstNumber, secondNumber);
+                String firstNumber = values[this.firstElementIndexInValidationFile].trim();
+                String secondNumber = values[this.secondElementIndexInValidationFile].trim();
+                String actualResult = values[this.sumElementIndexInValidationFile].trim();
+                String result = calculator.addWithChunks(firstNumber, secondNumber);
 
                 if(result.equals(actualResult)) {
                     System.out.println("Test " + testNO + " passed");
@@ -278,4 +297,6 @@ class CalculatorPerformanceTester {
 
         System.out.println("Duration time: " + duration + "s");
     }
+
+
 }
