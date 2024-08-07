@@ -1,4 +1,4 @@
-package main.java.org.example;
+package main.java.org.example.calculator;
 
 import java.util.Collections;
 import java.util.Map;

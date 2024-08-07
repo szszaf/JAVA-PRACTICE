@@ -1,5 +1,6 @@
-package main.java.org.example;
+package main.java.org.example.tester;
 
+import main.java.org.example.calculator.BigNumberCalculator;
 import main.java.org.example.interfaces.BigNumberCalculatorConsumer;
 
 import java.io.BufferedReader;
