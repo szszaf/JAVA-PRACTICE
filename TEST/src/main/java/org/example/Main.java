@@ -151,6 +151,11 @@ class BigNumberCalculator {
         return resultStringBuilder.toString();
     }
 
+    /**TEST 555
+     *
+     * @param number
+     * @return
+     */
     public int getNumberOfDigits(long number) {
         int currentLength = 0;
         if (number == 0) return 1;
