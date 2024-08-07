@@ -15,7 +15,7 @@ public class CalculatorPerformanceTester {
         long startTime = System.currentTimeMillis();
 
         try (BufferedReader br = new BufferedReader(
-                new FileReader(new File(this.testSetFilePath))
+                new FileReader("Test/src/sourceFiles/bigNumberGen.csv")
         )) {
             String line;
 
