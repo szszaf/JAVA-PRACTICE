@@ -7,23 +7,13 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        BigNumberCalculator bigNumberCalculator = new BigNumberCalculator(10);
+        BigNumberGenerator bigNumberGenerator = new BigNumberGenerator();
+        bigNumberGenerator.generateToFile(50, 100,
+                10000000, "Test/src//sourceFiles/bigNumberGen.csv");
 
-//        bigNumberCalculator.addWithChunks("1","2");
+        CalculatorPerformanceTester calculatorPerformanceTester =
+                new CalculatorPerformanceTester();
 
-//        BigNumberCalculatorValidator calculatorValidator = new BigNumberCalculatorValidator();
-//        calculatorValidator.validationTest(new BigNumberCalculator(10));
-
-//        BigNumberGenerator bigNumberGenerator = new BigNumberGenerator();
-//        bigNumberGenerator.generateToFile(50, 100,
-//                10000000, "Test/src//sourceFiles/bigNumberGen.csv");
-//
-//        CalculatorPerformanceTester performanceTester = new CalculatorPerformanceTester();
-//        System.out.println("Adding by positions performance");
-//        performanceTester.test(bigNumberCalculator::addByPositions);
-//        System.out.println("------------------------------------");
-//        System.out.println("Adding with chunks performance");
-//        performanceTester.test(bigNumberCalculator::addWithChunks);
-//        System.out.println("------------------------------------");
+        calculatorPerformanceTester.test();
     }
 }
