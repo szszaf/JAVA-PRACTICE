@@ -11,10 +11,10 @@ public class BigNumberCalculatorValidator {
     private final int secondElementIndexInValidationFile = 1;
     private final int sumElementIndexInValidationFile = 2;
 
-    public void validationTest(BigNumberCalculator calculator) throws FileNotFoundException {
+    public void validationTest(BigNumberCalculator calculator) {
 
         try (BufferedReader br = new BufferedReader(
-                new FileReader(new File(this.validationFilePath))
+                new FileReader(this.validationFilePath)
         )) {
             String line;
 
