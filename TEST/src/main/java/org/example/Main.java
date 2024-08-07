@@ -288,6 +288,9 @@ interface BigNumberCalculatorConsumer<T, V> {
     void accept(T t, V v);
 }
 
+/**
+ *
+ */
 class CalculatorPerformanceTester {
     private BigNumberCalculator calculator = new BigNumberCalculator();
     private final String testSetFilePath = "Test/src/sourceFiles/bigNumberGen.csv";
