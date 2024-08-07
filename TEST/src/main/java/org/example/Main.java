@@ -18,19 +18,12 @@ public class Main {
 //        bigNumberGenerator.generateToFile(50, 100,
 //                10000000, "Test/src//sourceFiles/bigNumberGen.csv");
 //
-        CalculatorPerformanceTester performanceTester = new CalculatorPerformanceTester();
-        System.out.println("Adding by positions performance");
-        performanceTester.test(bigNumberCalculator::addByPositions);
-        System.out.println("------------------------------------");
-        System.out.println("Adding with chunks performance");
-        performanceTester.test(bigNumberCalculator::addWithChunks);
-        System.out.println("------------------------------------");
+//        CalculatorPerformanceTester performanceTester = new CalculatorPerformanceTester();
+//        System.out.println("Adding by positions performance");
+//        performanceTester.test(bigNumberCalculator::addByPositions);
+//        System.out.println("------------------------------------");
+//        System.out.println("Adding with chunks performance");
+//        performanceTester.test(bigNumberCalculator::addWithChunks);
+//        System.out.println("------------------------------------");
     }
 }
-
-
-@FunctionalInterface
-interface BigNumberCalculatorConsumer<T, V> {
-    void accept(T t, V v);
-}
-

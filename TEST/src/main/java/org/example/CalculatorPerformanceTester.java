@@ -1,5 +1,7 @@
 package main.java.org.example;
 
+import main.java.org.example.interfaces.BigNumberCalculatorConsumer;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
