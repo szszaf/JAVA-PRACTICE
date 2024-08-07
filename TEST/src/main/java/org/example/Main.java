@@ -175,6 +175,11 @@ class BigNumberCalculator {
         return oldestDigit;
     }
 
+    /**
+     *
+     * @param number
+     * @return
+     */
     private long getNumberFromString(String number) {
         if (number.isEmpty()) {
             return 0;
