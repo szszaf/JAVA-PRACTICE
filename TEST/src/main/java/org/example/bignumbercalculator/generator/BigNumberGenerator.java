@@ -1,4 +1,4 @@
-package main.java.org.example.generator;
+package main.java.org.example.bignumbercalculator.generator;
 
 import java.io.FileWriter;
 import java.io.IOException;

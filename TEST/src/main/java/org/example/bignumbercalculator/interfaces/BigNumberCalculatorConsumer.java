@@ -1,4 +1,4 @@
-package main.java.org.example.interfaces;
+package main.java.org.example.bignumbercalculator.interfaces;
 
 
 @FunctionalInterface

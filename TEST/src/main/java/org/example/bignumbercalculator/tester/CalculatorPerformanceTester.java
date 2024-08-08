@@ -1,10 +1,9 @@
-package main.java.org.example.tester;
+package main.java.org.example.bignumbercalculator.tester;
 
-import main.java.org.example.calculator.BigNumberCalculator;
-import main.java.org.example.interfaces.BigNumberCalculatorConsumer;
+import main.java.org.example.bignumbercalculator.calculator.BigNumberCalculator;
+import main.java.org.example.bignumbercalculator.interfaces.BigNumberCalculatorConsumer;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 

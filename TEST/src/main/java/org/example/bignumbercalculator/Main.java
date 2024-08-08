@@ -1,9 +1,7 @@
-package main.java.org.example;
+package main.java.org.example.bignumbercalculator;
 
-import main.java.org.example.generator.BigNumberGenerator;
-import main.java.org.example.tester.CalculatorPerformanceTester;
-
-import java.io.FileNotFoundException;
+import main.java.org.example.bignumbercalculator.generator.BigNumberGenerator;
+import main.java.org.example.bignumbercalculator.tester.CalculatorPerformanceTester;
 
 public class Main {
     public static void main(String[] args)  {

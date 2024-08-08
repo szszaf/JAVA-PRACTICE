@@ -1,4 +1,4 @@
-package main.java.org.example.calculator;
+package main.java.org.example.bignumbercalculator.calculator;
 
 import java.util.Collections;
 import java.util.Map;
