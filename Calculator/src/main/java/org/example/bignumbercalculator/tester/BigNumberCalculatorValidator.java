@@ -1,6 +1,6 @@
-package main.java.org.example.bignumbercalculator.tester;
+package org.example.bignumbercalculator.tester;
 
-import main.java.org.example.bignumbercalculator.calculator.BigNumberCalculator;
+import org.example.bignumbercalculator.calculator.BigNumberCalculator;;
 
 import java.io.*;
 

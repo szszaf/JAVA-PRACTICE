@@ -1,4 +1,4 @@
-package main.java.org.example.bignumbercalculator;
+package org.example.bignumbercalculator;
 
 import main.java.org.example.bignumbercalculator.generator.BigNumberGenerator;
 import main.java.org.example.bignumbercalculator.tester.CalculatorPerformanceTester;
