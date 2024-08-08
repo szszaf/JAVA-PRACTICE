@@ -1,7 +1,7 @@
 package org.example.bignumbercalculator;
 
-import main.java.org.example.bignumbercalculator.generator.BigNumberGenerator;
-import main.java.org.example.bignumbercalculator.tester.CalculatorPerformanceTester;
+import org.example.bignumbercalculator.generator.BigNumberGenerator;
+import org.example.bignumbercalculator.tester.CalculatorPerformanceTester;
 
 public class Main {
     public static void main(String[] args)  {
