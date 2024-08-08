@@ -14,7 +14,7 @@ public enum TypesDB {
     DATE("DATE"),
     TIME("TIME"),
     TIMESTAMP("TIMESTAMP"),
-    BOOLEAN("BOOLEAN"),
+    BOOLEAN("BOOLEAN");
 
     private String sqlType;
 
