@@ -1,95 +1,97 @@
 CREATE TABLE Payers(
-	PK_PayerID SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	pesel VARCHAR(11) UNIQUE,
 	nip VARCHAR(10) UNIQUE,
-	vatUe VARCHAR(15) UNIQUE,
-	email VARCHAR(50),
-	phoneNumber VARCHAR(15)
+	vat_ue VARCHAR(15) UNIQUE
 );
 
 CREATE TABLE Individuals(
-	PK_IndividualID INT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	"name" VARCHAR(20) NOT NULL,
 	surname VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Companies(
-	PK_CompanyID INT PRIMARY KEY,
+	id INT PRIMARY KEY,
 	"name" VARCHAR(80) NOT NULL
 );
 
 CREATE TABLE Addresses(
-	PK_AddressID SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	country VARCHAR(50) NOT NULL,
 	city VARCHAR(50) NOT NULL,
-	zipCode VARCHAR(10),
+	zip_code VARCHAR(10),
 	street VARCHAR(30),
-	buildingNumber SMALLINT,
-	localNumber SMALLINT
+	building_number SMALLINT,
+	local_number SMALLINT
 );
 
 
 CREATE TABLE PayersAddresses(
-	PK_PayerAddressID SERIAL PRIMARY KEY,
-	FK_PayerID INT NOT NULL,
-	FK_AddressID INT NOT NULL
+	id SERIAL PRIMARY KEY,
+	payer_id INT,
+	address_id INT
 );
 
 CREATE TABLE Invoices(
-	PK_InvoiceID SERIAL PRIMARY KEY,
-	dateOfIssue DATE NOT NULL,
-	totalNetto NUMERIC(10,2),
-	totalBrutto NUMERIC(10,2),
-	dueDate DATE,
-	FK_PayerBuyerID INT NOT NULL,
-	FK_PayerSellerID INT NOT NULL
+	id SERIAL PRIMARY KEY,
+	date_of_issue DATE NOT NULL,
+	total_netto NUMERIC(10,2),
+	total_brutto NUMERIC(10,2),
+    total_vat NUMERIC(10,2),
+	due_date DATE,
+	buyer_id INT,
+	seller_id INT
 );
 
 CREATE TABLE Items(
-	PK_ItemID SERIAL PRIMARY KEY,
-	listID SMALLINT NOT NULL,
-	nettoSum NUMERIC(10,2) NOT NULL,
-	bruttoSum NUMERIC(10,2) NOT NULL,
-	vatSum NUMERIC(10,2) NOT NULL,
-	vatRate NUMERIC(5,2) NOT NULL,
-	amount NUMERIC(10,2) NOT NULL,
-	FK_UnitID INT NOT NULL
+	id SERIAL PRIMARY KEY,
+    "name" VARCHAR(80),
+	unit_id INT
 );
 
 CREATE TABLE InvoicesItems(
-	PK_InvoiceItemID SERIAL PRIMARY KEY,
-	FK_InvoiceID INT NOT NULL,
-	FK_ItemID INT NOT NULL
+	id SERIAL PRIMARY KEY,
+    position SMALLINT NOT NULL,
+    netto_sum NUMERIC(10,2) NOT NULL,
+    brutto_sum NUMERIC(10,2) NOT NULL,
+    vat_sum NUMERIC(10,2) NOT NULL,
+    vat_rate NUMERIC(5,2) NOT NULL,
+    amount NUMERIC(10,2) NOT NULL,
+	invoice_id INT,
+	item_id INT
 );
 
 CREATE TABLE Units(
-	PK_UnitID SERIAL PRIMARY KEY,
+	id SERIAL PRIMARY KEY,
 	"name" VARCHAR(20)
 );
 
+
 ALTER TABLE Individuals
-ADD CONSTRAINT FK_PayerID FOREIGN KEY(PK_IndividualID) REFERENCES Payers(PK_PayerID);
+ADD CONSTRAINT FK_Payer FOREIGN KEY(id) REFERENCES Payers(id);
 
 ALTER TABLE Companies
-ADD CONSTRAINT FK_PayerID FOREIGN KEY(PK_CompanyID) REFERENCES Payers(PK_PayerID);
+ADD CONSTRAINT FK_Payer FOREIGN KEY(id) REFERENCES Payers(id);
 
 ALTER TABLE PayersAddresses
-ADD CONSTRAINT FK_PayerID FOREIGN KEY(FK_PayerID) REFERENCES Payers(PK_PayerID);
+ADD CONSTRAINT FK_Payer FOREIGN KEY(payer_id) REFERENCES Payers(id);
 
 ALTER TABLE PayersAddresses
-ADD CONSTRAINT FK_AddressID FOREIGN KEY(FK_AddressID) REFERENCES Addresses(PK_AddressID);
+ADD CONSTRAINT FK_AddressID FOREIGN KEY(address_id) REFERENCES Addresses(id);
 
 ALTER TABLE Invoices
-ADD CONSTRAINT FK_Buyer FOREIGN KEY(FK_PayerBuyerID) REFERENCES Payers(PK_PayerID);
+ADD CONSTRAINT FK_Buyer FOREIGN KEY(buyer_id) REFERENCES Payers(id);
 
 ALTER TABLE Invoices
-ADD CONSTRAINT FK_Seller FOREIGN KEY(FK_PayerSellerID) REFERENCES Payers(PK_PayerID);
+ADD CONSTRAINT FK_Seller FOREIGN KEY(seller_id) REFERENCES Payers(id);
 
 ALTER TABLE InvoicesItems
-ADD CONSTRAINT FK_Item FOREIGN KEY(FK_ItemID) REFERENCES Items(PK_ItemID);
+ADD CONSTRAINT FK_Item FOREIGN KEY(item_id) REFERENCES Items(id);
 
 ALTER TABLE InvoicesItems
-ADD CONSTRAINT FK_Invoice FOREIGN KEY(FK_InvoiceID) REFERENCES Invoices(PK_InvoiceID);
+ADD CONSTRAINT FK_Invoice FOREIGN KEY(invoice_id) REFERENCES Invoices(id);
 
 ALTER TABLE Items
-ADD CONSTRAINT FK_Unit FOREIGN KEY(FK_UnitID) REFERENCES Units(PK_UnitID);
+ADD CONSTRAINT FK_Unit FOREIGN KEY(unit_id) REFERENCES Units(id);
+
