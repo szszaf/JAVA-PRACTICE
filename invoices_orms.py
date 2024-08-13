@@ -72,7 +72,7 @@ class Invoice(BASE):
                         foreign_keys=[buyer_id], back_populates='invoices_as_buyer')
    seller = relationship('Payer', uselist=False, foreign_keys=[seller_id], 
                          back_populates='invoices_as_seller')
-   items = relationship('Item', secondary='invoicesitems', back_populates='invoices')
+   invoiceitem = relationship('InvoiceItem', back_populates='invoices')
 
 class Item(BASE):
    __tablename__ = 'items'
@@ -82,7 +82,10 @@ class Item(BASE):
    unit_id = Column(Integer, ForeignKey('units.id'))
 
    unit = relationship("Unit", uselist=False, back_populates='items')
-   invoices = relationship("Invoice", secondary='invoicesitems', back_populates='items')
+   invoiceitem = relationship("InvoiceItem", back_populates='items')
+
+   def __repr__(self):
+      return self.name
 
 
 class Unit(BASE):
@@ -105,3 +108,6 @@ class InvoiceItem(BASE):
    amount = Column(Numeric(precision=10, scale=2), nullable=False)
    invoice_id = Column(Integer, ForeignKey('invoices.id'))
    item_id = Column(Integer, ForeignKey('items.id'))
+
+   items = relationship('Item', back_populates='invoiceitem')
+   invoices = relationship('Invoice', back_populates='invoiceitem')

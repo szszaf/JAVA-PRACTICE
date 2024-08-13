@@ -7,8 +7,8 @@ CREATE TABLE Payers(
 
 CREATE TABLE Individuals(
 	id INT PRIMARY KEY,
-	"name" VARCHAR(20) NOT NULL,
-	surname VARCHAR(50) NOT NULL
+	"name" VARCHAR(50) NOT NULL,
+	surname VARCHAR(80) NOT NULL
 );
 
 CREATE TABLE Companies(
@@ -22,8 +22,8 @@ CREATE TABLE Addresses(
 	city VARCHAR(50) NOT NULL,
 	zip_code VARCHAR(10),
 	street VARCHAR(30),
-	building_number SMALLINT,
-	local_number SMALLINT
+	building_number VARCHAR(8),
+	local_number VARCHAR(8)
 );
 
 
