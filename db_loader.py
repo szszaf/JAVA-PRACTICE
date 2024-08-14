@@ -37,14 +37,14 @@ class InvoiceGenerator:
          subject = (self.personal_generator.generate_company(payer) if individual_or_company 
                     else self.personal_generator.generate_individual(payer))
 
-         session.merge(subject)
+         session.add(subject)
 
          if (i//payers_count) % 100 == 0:
-            print(f"Generated {int((i/payers_count) * 100)}% of payers.")
+            print(f"Generated {int((i/payers_count) * 100)}% of payers...")
             sleep(0.2)
             clear_last_terminal_line()
 
-      print('Payers have been generated.')
+      print('payers have been generated.')
 
       for i in range(invoices_count):
          payers_indexes = sample(range(0, payers_count), 2)
@@ -53,17 +53,19 @@ class InvoiceGenerator:
             payers_pool[payers_indexes[0]],
             payers_pool[payers_indexes[1]])
          
-         session.merge(invoice)
-
+         session.add(invoice)
+         
          if (i//invoices_count) % 100 == 0:   
-            print(f"Generated {int((i/invoices_count) * 100)}% of invoices.")
+            print(f"generated {int((i/invoices_count) * 100)}% of invoices...")
             sleep(0.2)
             clear_last_terminal_line()
 
-      print('Invoices have been generated.')
+      print('invoices have been generated.')
       print('saving to db...')
       session.commit()
       session.close()
+      
+      print('data has been saved.')
 
 def clear_last_terminal_line():
     stdout.write('\x1b[1A')  
@@ -72,5 +74,5 @@ def clear_last_terminal_line():
 
 if __name__ == '__main__':
    ig = InvoiceGenerator()
-   ig.generate(payers_count=10, invoices_count=10)
+   ig.generate(payers_count=100, invoices_count=1_000)
 

@@ -1,48 +1,88 @@
 from random import randint, choice
 from functools import reduce
 from faker import Faker
-from invoices_orms import Payer, Individual, Company, Address, Item, Invoice, InvoiceItem, Unit
+from invoices_orms import (
+    Payer, Individual, Company, PayerAddress, Address, Item, Invoice, InvoiceItem, Unit)
 from datetime import datetime
 
 POLAND_LOCAL = 'pl_PL'
 
-PRODUCTS_SERVICES_WITH_UNITS = {
-    'Laptop': 'sztuka',               
-    'Smartfon': 'sztuka',             
-    'Telewizor': 'sztuka',            
-    'Monitor': 'sztuka',              
-    'Kamera': 'sztuka',               
-    'Tablet': 'sztuka',               
-    'Drukarka': 'sztuka',             
-    'Wynajem samochodu': 'sztuka',    
-    'Farba do malowania': 'kg',       
-    'Materiał budowlany': 'm2',       
-    'Gips': 'kg',                     
-    'Papier': 'kg',                   
-    'Wynajem sprzętu': 'dzień',       
-    'Usługa konserwacji': 'sztuka',   
-    'Konsultacja': 'sztuka',          
-    'Obraz': 'sztuka',                
-    'Rama do obrazu': 'sztuka',       
-    'Meble biurowe': 'sztuka',        
-    'Oprogramowanie': 'sztuka',       
-    'Karta podarunkowa': 'sztuka',    
-    'Ubrania robocze': 'sztuka',      
-    'Narzędzia ręczne': 'sztuka',     
-    'Podzespoły komputerowe': 'sztuka',
-    'Akcesoria do telefonów': 'sztuka',
-    'Materiał izolacyjny': 'm2',      
-    'Chemikalia': 'kg',               
-    'Systemy alarmowe': 'sztuka',     
-    'Głośniki': 'sztuka',             
-    'Hurtownia narzędzi': 'sztuka',   
-    'Zestawy komputerowe': 'sztuka',  
-    'Części zamienne': 'sztuka'       
+UNITS = {
+    'sztuka': Unit(name='sztuka'),
+    'm2': Unit(name='m2'),
+    'kg': Unit(name='kg'),
+    'komplet': Unit(name='komplet'),
+    'l': Unit(name='l'),
+    'zestaw': Unit(name='zestaw'),
+    'm3': Unit(name='m3'),
+    'opakowanie': Unit(name='opakowanie')
 }
 
 PRODUCTS_SERVICES_WITH_UNITS = [
-    Item(name="głośnik", unit=Unit(name="sztuka")),
-    Item(name="laptop", unit=Unit(name="sztuka"))
+    Item(name="głośnik", unit=UNITS['sztuka']),
+    Item(name="laptop", unit=UNITS['sztuka']),
+    Item(name='podzespoły komputerowe', unit=UNITS['sztuka']),
+    Item(name='materiał izolacyjny', unit=UNITS['m2']),
+    Item(name='gips', unit=UNITS['kg']),
+    Item(name='pędzle', unit=UNITS['komplet']),
+    Item(name='drukarka', unit=UNITS['sztuka']),
+    Item(name='monitor', unit=UNITS['sztuka']),
+    Item(name='klawiatura', unit=UNITS['sztuka']),
+    Item(name='mysz', unit=UNITS['sztuka']),
+    Item(name='kabel HDMI', unit=UNITS['sztuka']),
+    Item(name='kabel USB', unit=UNITS['sztuka']),
+    Item(name='stół roboczy', unit=UNITS['sztuka']),
+    Item(name='krzesło biurowe', unit=UNITS['sztuka']),
+    Item(name='uchwyt do monitora', unit=UNITS['sztuka']),
+    Item(name='system operacyjny', unit=UNITS['sztuka']),
+    Item(name='oprogramowanie biurowe', unit=UNITS['sztuka']),
+    Item(name='papier A4', unit=UNITS['opakowanie']),
+    Item(name='toner', unit=UNITS['sztuka']),
+    Item(name='tablica suchościeralna', unit=UNITS['sztuka']),
+    Item(name='marker do tablicy', unit=UNITS['sztuka']),
+    Item(name='notatnik', unit=UNITS['sztuka']),
+    Item(name='długopis', unit=UNITS['sztuka']),
+    Item(name='papier toaletowy', unit=UNITS['opakowanie']),
+    Item(name='mydło w płynie', unit=UNITS['l']),
+    Item(name='ręczniki papierowe', unit=UNITS['opakowanie']),
+    Item(name='kosz na śmieci', unit=UNITS['sztuka']),
+    Item(name='płyn do czyszczenia', unit=UNITS['l']),
+    Item(name='ścierki', unit=UNITS['komplet']),
+    Item(name='wiertarka', unit=UNITS['sztuka']),
+    Item(name='wkrętarka', unit=UNITS['sztuka']),
+    Item(name='młotek', unit=UNITS['sztuka']),
+    Item(name='śrubokręt', unit=UNITS['sztuka']),
+    Item(name='klucz francuski', unit=UNITS['sztuka']),
+    Item(name='miara', unit=UNITS['sztuka']),
+    Item(name='zestaw narzędzi', unit=UNITS['zestaw']),
+    Item(name='przedłużacz', unit=UNITS['sztuka']),
+    Item(name='lampa biurowa', unit=UNITS['sztuka']),
+    Item(name='wentylator', unit=UNITS['sztuka']),
+    Item(name='kawa', unit=UNITS['opakowanie']),
+    Item(name='herbata', unit=UNITS['opakowanie']),
+    Item(name='cukier', unit=UNITS['kg']),
+    Item(name='mleko', unit=UNITS['l']),
+    Item(name='kubek', unit=UNITS['sztuka']),
+    Item(name='talerz', unit=UNITS['sztuka']),
+    Item(name='sztućce', unit=UNITS['komplet']),
+    Item(name='opakowanie na lunch', unit=UNITS['sztuka']),
+    Item(name='organizator biurowy', unit=UNITS['sztuka']),
+    Item(name='etykiety', unit=UNITS['opakowanie']),
+    Item(name='koszulki na dokumenty', unit=UNITS['opakowanie']),
+    Item(name='bindownica', unit=UNITS['sztuka']),
+    Item(name='woda mineralna', unit=UNITS['l']),
+    Item(name='serwetki', unit=UNITS['opakowanie']),
+    Item(name='zestaw kluczy', unit=UNITS['zestaw']),
+    Item(name='papier do drukarki', unit=UNITS['opakowanie']),
+    Item(name='uchwyt do telefonu', unit=UNITS['sztuka']),
+    Item(name='płyta CD', unit=UNITS['sztuka']),
+    Item(name='podkładka pod mysz', unit=UNITS['sztuka']),
+    Item(name='klamki', unit=UNITS['komplet']),
+    Item(name='słuchawki', unit=UNITS['sztuka']),
+    Item(name='materiał budowlany', unit=UNITS['m2']),
+    Item(name='drabina', unit=UNITS['sztuka']),
+    Item(name='farba', unit=UNITS['l']),
+    Item(name='pianka izolacyjna', unit=UNITS['m3'])
 ]
 
 VAT_RATES = [0.23, 0.08, 0.05]
@@ -79,13 +119,19 @@ class PersonalsGenerator:
         payers.append(Payer(pesel=pesel, 
                             nip=nip, 
                             vat_ue=self.generate_vat_ue('PL', nip),
-                            addresses = [self.generate_address()]))  
+                            payeraddress = [self.generate_address() for _ in range(1, randint(2, 5))]))  
       return payers
     
     def generate_individual(self, payer):
-        full_name = self.fake.name()
-        first_name = full_name.split(" ")[0]
-        last_name = full_name.split(" ")[1]
+        first_name = None
+        last_name = None
+
+        if randint(0,1):
+            first_name = self.fake.first_name_female()
+            last_name = self.fake.last_name_female()
+        else:
+            first_name = self.fake.first_name_male()
+            last_name = self.fake.last_name_male()
 
         return Individual(name=first_name, 
                           surname=last_name, payer=payer)
@@ -93,14 +139,23 @@ class PersonalsGenerator:
     def generate_company(self, payer):
         return Company(name=self.fake.company(), payer=payer)
     
-    def generate_address(self):
-        return Address(
-            country = 'Polska',
-            city = self.fake.city(),
-            zip_code = self.fake.zipcode(),
-            street = self.fake.street_name(),
-            building_number = str(randint(1,100)),
-            local_number = str(randint(1, 20)))
+    def generate_address(self, still_owns_probability=0.7):
+
+        owns_from = self.random_date()
+        owns_to = (None if self.generate_probability() <= still_owns_probability 
+                   else self.random_date(owns_from))
+
+        return PayerAddress(
+            address= Address(
+                        country = 'Polska',
+                        city = self.fake.city(),
+                        zip_code = self.fake.zipcode(),
+                        street = self.fake.street_name(),
+                        building_number = str(randint(1,100)),
+                        local_number = str(randint(1, 20))
+                        ),
+                        owns_from = owns_from,
+                        owns_to = owns_to)
 
     def generate_pesel(self):
         year = randint(1940, 2004)
@@ -124,11 +179,7 @@ class PersonalsGenerator:
     
     def generate_vat_ue(self, country_code, nip):
         return country_code + nip
-    
-    
-    def generate_item(self):
-        return choice(PRODUCTS_SERVICES_WITH_UNITS)
-    
+      
     def generate_items_list(self):
         items = []
         total_netto = 0
@@ -174,7 +225,6 @@ class PersonalsGenerator:
                        buyer = buyer,
                        seller = seller,
                         invoiceitem=items)
-        
 
         return invoice
     
@@ -183,7 +233,9 @@ class PersonalsGenerator:
         end_timestamp = int(end.timestamp())
         random_timestamp = randint(start_timestamp, end_timestamp)
         return datetime.fromtimestamp(random_timestamp)
-    
-    def generate_product_service(self):
-        return choice(list(PRODUCTS_SERVICES_WITH_UNITS.keys()))
 
+    def generate_item(self):
+        return choice(PRODUCTS_SERVICES_WITH_UNITS)
+    
+    def generate_probability(self):
+        return randint(0,10) / 10

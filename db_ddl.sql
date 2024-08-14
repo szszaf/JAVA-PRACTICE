@@ -30,7 +30,9 @@ CREATE TABLE Addresses(
 CREATE TABLE PayersAddresses(
 	id SERIAL PRIMARY KEY,
 	payer_id INT,
-	address_id INT
+	address_id INT,
+    owns_from DATE NOT NULL,
+    owns_to DATE
 );
 
 CREATE TABLE Invoices(
@@ -46,7 +48,7 @@ CREATE TABLE Invoices(
 
 CREATE TABLE Items(
 	id SERIAL PRIMARY KEY,
-    "name" VARCHAR(80),
+    "name" VARCHAR(80) UNIQUE,
 	unit_id INT
 );
 
@@ -64,7 +66,7 @@ CREATE TABLE InvoicesItems(
 
 CREATE TABLE Units(
 	id SERIAL PRIMARY KEY,
-	"name" VARCHAR(20)
+	"name" VARCHAR(20) UNIQUE
 );
 
 

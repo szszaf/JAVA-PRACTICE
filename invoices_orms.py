@@ -13,7 +13,7 @@ class Payer(BASE):
 
    individual = relationship("Individual", uselist=False, back_populates="payer")
    company = relationship("Company", uselist=False, back_populates="payer")
-   addresses = relationship("Address", secondary='payersaddresses', back_populates="payers")
+   payeraddress = relationship('PayerAddress', back_populates='payer')
    invoices_as_buyer = relationship("Invoice", foreign_keys='Invoice.buyer_id', back_populates='buyer')
    invoices_as_seller = relationship("Invoice", foreign_keys='Invoice.seller_id', back_populates='seller')
 
@@ -46,14 +46,19 @@ class Address(BASE):
    building_number = Column(Integer)
    local_number = Column(Integer)
 
-   payers = relationship("Payer", secondary='payersaddresses', back_populates="addresses")
+   payeraddress = relationship('PayerAddress', back_populates='address')
 
 class PayerAddress(BASE):
    __tablename__ = 'payersaddresses'
 
    id = Column(Integer, primary_key=True)
+   owns_from = Column(Date)
+   owns_to = Column(Date)
    payer_id = Column(Integer, ForeignKey('payers.id'))
    address_id = Column(Integer, ForeignKey('addresses.id'))
+
+   payer = relationship('Payer', back_populates='payeraddress')
+   address = relationship('Address', back_populates='payeraddress')
 
 class Invoice(BASE):
    __tablename__ = 'invoices'
