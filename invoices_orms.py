@@ -17,7 +17,6 @@ class Payer(BASE):
    invoices_as_buyer = relationship("Invoice", foreign_keys='Invoice.buyer_id', back_populates='buyer')
    invoices_as_seller = relationship("Invoice", foreign_keys='Invoice.seller_id', back_populates='seller')
 
-
 class Individual(BASE):
    __tablename__ = 'individuals'
 
@@ -48,7 +47,7 @@ class Address(BASE):
    local_number = Column(Integer)
 
    payers = relationship("Payer", secondary='payersaddresses', back_populates="addresses")
-   
+
 class PayerAddress(BASE):
    __tablename__ = 'payersaddresses'
 
@@ -86,8 +85,7 @@ class Item(BASE):
 
    def __repr__(self):
       return self.name
-
-
+   
 class Unit(BASE):
    __tablename__ = 'units'
 

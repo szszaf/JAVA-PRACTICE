@@ -40,6 +40,11 @@ PRODUCTS_SERVICES_WITH_UNITS = {
     'Części zamienne': 'sztuka'       
 }
 
+PRODUCTS_SERVICES_WITH_UNITS = [
+    Item(name="głośnik", unit=Unit(name="sztuka")),
+    Item(name="laptop", unit=Unit(name="sztuka"))
+]
+
 VAT_RATES = [0.23, 0.08, 0.05]
 
 NIP_DIGIT_NUMBER = 10
@@ -120,8 +125,9 @@ class PersonalsGenerator:
     def generate_vat_ue(self, country_code, nip):
         return country_code + nip
     
-    def generate_unit(self):
-        return Unit(name=choice(list(PRODUCTS_SERVICES_WITH_UNITS.values())))
+    
+    def generate_item(self):
+        return choice(PRODUCTS_SERVICES_WITH_UNITS)
     
     def generate_items_list(self):
         items = []
@@ -138,10 +144,7 @@ class PersonalsGenerator:
             total_brutto += brutto
             total_vat += vat_sum
 
-            item = Item(
-                name=self.generate_product_service(),
-                unit=self.generate_unit()
-            )
+            item = self.generate_item()
 
             invoiceitem = InvoiceItem(
                 position=i,
@@ -152,7 +155,6 @@ class PersonalsGenerator:
                 amount=randint(1,20),
                 items=item 
             )
-
 
             items.append(invoiceitem)
 
