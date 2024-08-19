@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, String, Date, Numeric, SmallInteger, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Numeric, SmallInteger, ForeignKey, Boolean
 
 BASE = declarative_base()
 
@@ -7,7 +7,6 @@ class Payer(BASE):
    __tablename__ = 'payers'
    
    id = Column(Integer, primary_key=True, autoincrement=True)
-   pesel = Column(String(11), unique=True)
    nip = Column(String(10), unique=True)
    vat_ue = Column(String(15), unique=True)
 
@@ -21,6 +20,7 @@ class Individual(BASE):
    __tablename__ = 'individuals'
 
    id = Column(Integer, ForeignKey('payers.id'), primary_key=True)
+   pesel = Column(String(11))
    name = Column(String(20), nullable=False)
    surname = Column(String(50), nullable=False)
 
@@ -64,11 +64,13 @@ class Invoice(BASE):
    __tablename__ = 'invoices'
 
    id = Column(Integer, primary_key=True)
+   tag = Column(String, nullable = False)
    date_of_issue = Column(Date, nullable=False)
    total_netto = Column(Numeric(precision=10, scale=2), nullable=False)
    total_brutto = Column(Numeric(precision=10, scale=2), nullable=False)
    total_vat = Column(Numeric(precision=10, scale=2), nullable=False)
    due_date = Column(Date)
+   is_paid = Column(Boolean)
    buyer_id = Column(Integer, ForeignKey('payers.id'))
    seller_id = Column(Integer, ForeignKey('payers.id'))
 

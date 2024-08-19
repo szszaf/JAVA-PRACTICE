@@ -97,18 +97,18 @@ class PersonalsGenerator:
 
     def generate_payers(self, count=10_000):
       payers = []
-      pesel_pool = set()
+      #pesel_pool = set()
       nip_pool = set()
       for _ in range(count):
-        is_pesel_generated = False
+        #is_pesel_generated = False
         is_nip_generated = False
-        pesel = ''
+        #pesel = ''
 
-        while not is_pesel_generated:
-            pesel = self.generate_pesel()
-            if pesel not in pesel_pool:
-               is_pesel_generated = True
-               pesel_pool.add(pesel)
+        # while not is_pesel_generated:
+        #     pesel = self.generate_pesel()
+        #     if pesel not in pesel_pool:
+        #        is_pesel_generated = True
+        #        pesel_pool.add(pesel)
          
         while not is_nip_generated:
             nip = self.generate_nip()
@@ -116,7 +116,7 @@ class PersonalsGenerator:
                is_nip_generated = True
                nip_pool.add(nip)
                
-        payers.append(Payer(pesel=pesel, 
+        payers.append(Payer(
                             nip=nip, 
                             vat_ue=self.generate_vat_ue('PL', nip),
                             payeraddress = [self.generate_address() for _ in range(1, randint(2, 5))]))  
@@ -133,8 +133,9 @@ class PersonalsGenerator:
             first_name = self.fake.first_name_male()
             last_name = self.fake.last_name_male()
 
-        return Individual(name=first_name, 
-                          surname=last_name, payer=payer)
+        return Individual(pesel = self.generate_pesel(),
+                        name=first_name, 
+                        surname=last_name, payer=payer)
     
     def generate_company(self, payer):
         return Company(name=self.fake.company(), payer=payer)
@@ -198,7 +199,7 @@ class PersonalsGenerator:
             item = self.generate_item()
 
             invoiceitem = InvoiceItem(
-                position=i,
+                position=i + 1,
                 netto_sum=netto,
                 brutto_sum=brutto,
                 vat_sum=vat_sum,
@@ -217,16 +218,26 @@ class PersonalsGenerator:
         date_of_issue = self.random_date()
         due_date = self.random_date(date_of_issue)
 
-        invoice = Invoice(date_of_issue = date_of_issue,
-                       total_netto = total_netto,
-                       total_brutto = total_brutto,
-                       total_vat = total_vat,
-                       due_date = due_date,
-                       buyer = buyer,
-                       seller = seller,
+        is_paid = randint(0,1)
+
+        invoice = Invoice(tag = self.generate_invoice_tag(date_of_issue),
+                        date_of_issue = date_of_issue,
+                        total_netto = total_netto,
+                        total_brutto = total_brutto,
+                        total_vat = total_vat,
+                        due_date = due_date,
+                        is_paid = is_paid,
+                        buyer = buyer,
+                        seller = seller,
                         invoiceitem=items)
 
         return invoice
+    
+    def generate_invoice_tag(self, date_of_issue):
+        return (str(date_of_issue.year) + '/' + 
+                str(date_of_issue.month) + '/' + 
+                str(date_of_issue.day) + '/' + 
+                str(randint(1000,9999)))
     
     def random_date(self, start=datetime(2000, 2, 15), end=datetime(2024, 5, 5)):
         start_timestamp = int(start.timestamp())
