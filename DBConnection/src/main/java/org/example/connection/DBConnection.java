@@ -67,13 +67,13 @@ public class DBConnection {
         return queryExecution(alterQuery);
     }
 
-    public boolean insertOne(String tableName, RecordBuilder recordBuilder) {
-        if (recordBuilder == null || !recordBuilder.isBuild()) return false;
-
-        String insertQuery = "INSERT INTO " + tableName;
-
-        return true;
-    }
+//    public boolean insertOne(String tableName, RecordBuilder recordBuilder) {
+//        if (recordBuilder == null || !recordBuilder.isBuild()) return false;
+//
+//        String insertQuery = "INSERT INTO " + tableName;
+//
+//        return true;
+//    }
 
     private String getRecordString(Map<String, Object> fields) {
         return fields.keySet().stream().sorted()
