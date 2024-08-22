@@ -1,9 +1,6 @@
 package com.example.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,10 +12,21 @@ import lombok.Setter;
 @Setter
 public class Secondary {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private int number1;
+
+    public Secondary(String title, int number1, int number2, int number3, int number4, int sum, int product) {
+        this.title = title;
+        this.number1 = number1;
+        this.number2 = number2;
+        this.number3 = number3;
+        this.number4 = number4;
+        this.sum = sum;
+        this.product = product;
+    }
+
     private int number2;
     private int number3;
     private int number4;

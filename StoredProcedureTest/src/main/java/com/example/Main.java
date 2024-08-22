@@ -4,7 +4,7 @@ import com.example.db.PerformanceTester;
 
 public class Main {
     public static void main(String[] args) {
-        PerformanceTester pt = new PerformanceTester();
-        pt.generateAndSave(100_000);
+        PerformanceTester performanceTester = new PerformanceTester();
+        performanceTester.test(100_000, 1);
     }
 }
